@@ -1,0 +1,41 @@
+name: Update CI Dashboard
+
+on:
+  schedule:
+    - cron: '0 6 * * *' # Runs daily at 06:00 UTC
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Allows manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+
+      - name: Run Data Collector
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd ci-dashboard/collector
+          go run main.go
+          # Move the generated json to web folder is handled by main.go, 
+          # but let's verify it exists
+          ls -l ../web/data.json
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./ci-dashboard/web
+          publish_branch: gh-pages
