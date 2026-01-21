@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-01-21 16:48:22 UTC",
+  "generated_at": "2026-01-21 16:57:43 UTC",
   "latest_commit": {
     "sha": "a60f14e",
     "message": "test(e2e): add retry logic for image pulling\n\nCurrently, end-to-end tests fail intermittently during the setup phase\ndue to image pulling failures (e.g., registry timeouts or network\nissues).\n\nThis commit adds a retry mechanism with exponential backoff to the\nimage pulling logic in the test setup. It attempts to pull the required\nimages up to 5 times before failing the test.\n\nPR: https://github.com/urunc-dev/urunc/pull/377\nSigned-off-by: Sankalp \u003csankalp25103@gmail.com\u003e\nReviewed-by: Charalampos Mainas \u003ccmainas@nubificus.co.uk\u003e\nApproved-by: Charalampos Mainas \u003ccmainas@nubificus.co.uk\u003e",
