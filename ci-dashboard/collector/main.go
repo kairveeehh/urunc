@@ -76,7 +76,10 @@ func main() {
 	req, _ := http.NewRequest("GET", APIURL+"/actions/runs?branch=main&event=push&per_page=1", nil)
 	req.Header.Set("Authorization", "Bearer "+token)
 	resp, err := client.Do(req)
-	if err != nil { panic(err) }
+	if err != nil {
+		fmt.Println("Error fetching latest run:", err)
+		os.Exit(1)
+	}
 	defer resp.Body.Close()
 
 	var latestRunData RunListResponse
@@ -94,12 +97,16 @@ func main() {
 	}
 
 	// 2. Get Last 20 Runs for Analysis
-	// We filter for a specific workflow if needed, or get all. 
-	// Here we get recent runs to extract jobs.
 	req, _ = http.NewRequest("GET", APIURL+"/actions/runs?per_page=20", nil)
 	req.Header.Set("Authorization", "Bearer "+token)
-	resp, _ = client.Do(req)
+	resp, err = client.Do(req)
+	if err != nil {
+		fmt.Println("Error fetching runs:", err)
+		os.Exit(1)
+	}
 	body, _ = ioutil.ReadAll(resp.Body)
+	resp.Body.Close() // Close previous body
+
 	var recentRuns RunListResponse
 	json.Unmarshal(body, &recentRuns)
 
@@ -112,9 +119,13 @@ func main() {
 		// Fetch jobs for this run
 		jobsReq, _ := http.NewRequest("GET", fmt.Sprintf("%s/actions/runs/%d/jobs", APIURL, run.ID), nil)
 		jobsReq.Header.Set("Authorization", "Bearer "+token)
-		jobsResp, _ := client.Do(jobsReq)
-		jobsBody, _ := ioutil.ReadAll(jobsResp.Body)
+		jobsResp, err := client.Do(jobsReq)
+		if err != nil {
+			fmt.Printf("Error fetching jobs for run %d: %v\n", run.ID, err)
+			continue
+		}
 		
+		jobsBody, _ := ioutil.ReadAll(jobsResp.Body)
 		var jobsData GitHubJobsResponse
 		json.Unmarshal(jobsBody, &jobsData)
 		jobsResp.Body.Close()
@@ -124,7 +135,6 @@ func main() {
 				jobStats[job.Name] = &JobData{History: []RunResult{}}
 			}
 			
-			// Map GitHub conclusion to our status
 			status := "skipped"
 			if job.Conclusion == "success" { status = "pass" }
 			if job.Conclusion == "failure" { status = "fail" }
@@ -142,7 +152,6 @@ func main() {
 		successCount := 0.0
 		totalCount := 0.0
 		
-		// Limit to last 10 runs for display
 		if len(data.History) > 10 {
 			data.History = data.History[:10]
 		}
@@ -175,9 +184,13 @@ func main() {
 	}
 
 	file, _ := json.MarshalIndent(output, "", "  ")
-// Write to the sibling directory "../web"
-	err := ioutil.WriteFile("../web/data.json", file, 0644)
+
+	// IMPORTANT: Write to the sibling directory "../web"
+	err = ioutil.WriteFile("../web/data.json", file, 0644)
 	if err != nil {
 		fmt.Println("Error writing file:", err)
 		os.Exit(1)
-	}	
+	}
+	
+	fmt.Println("Done! Saved to web/data.json")
+}
