@@ -1,0 +1,639 @@
+{
+  "generated_at": "2026-01-21 16:29:16 UTC",
+  "latest_commit": {
+    "sha": "a60f14e",
+    "message": "test(e2e): add retry logic for image pulling\n\nCurrently, end-to-end tests fail intermittently during the setup phase\ndue to image pulling failures (e.g., registry timeouts or network\nissues).\n\nThis commit adds a retry mechanism with exponential backoff to the\nimage pulling logic in the test setup. It attempts to pull the required\nimages up to 5 times before failing the test.\n\nPR: https://github.com/urunc-dev/urunc/pull/377\nSigned-off-by: Sankalp \u003csankalp25103@gmail.com\u003e\nReviewed-by: Charalampos Mainas \u003ccmainas@nubificus.co.uk\u003e\nApproved-by: Charalampos Mainas \u003ccmainas@nubificus.co.uk\u003e",
+    "date": "2026-01-16 10:05"
+  },
+  "jobs": {
+    "Analyze (go)": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171986856/job/60899667045"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171728557/job/60894811249"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21170137941/job/60885798917"
+        }
+      ]
+    },
+    "Analyze (python)": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171986856/job/60899667042"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171728557/job/60894811233"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21170137941/job/60885798980"
+        }
+      ]
+    },
+    "Build / build (amd64, ubuntu-22.04)": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962213696"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21155423385/job/60839308989"
+        }
+      ]
+    },
+    "Build / build (arm64, ubuntu-22.04-arm)": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962213682"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21155423385/job/60839308993"
+        }
+      ]
+    },
+    "E2E test / VM test (amd64, test_crictl)": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962277293"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21155423385/job/60839356405"
+        }
+      ]
+    },
+    "E2E test / VM test (amd64, test_ctr)": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962277291"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21155423385/job/60839356400"
+        }
+      ]
+    },
+    "E2E test / VM test (amd64, test_docker)": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962277294"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21155423385/job/60839356432"
+        }
+      ]
+    },
+    "E2E test / VM test (amd64, test_nerdctl)": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962277295"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21155423385/job/60839356417"
+        }
+      ]
+    },
+    "E2E test / VM test (arm64, test_crictl)": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962277301"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21155423385/job/60839356406"
+        }
+      ]
+    },
+    "E2E test / VM test (arm64, test_ctr)": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962277287"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21155423385/job/60839356409"
+        }
+      ]
+    },
+    "E2E test / VM test (arm64, test_docker)": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962277302"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21155423385/job/60839356399"
+        }
+      ]
+    },
+    "E2E test / VM test (arm64, test_nerdctl)": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962277316"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21155423385/job/60839356401"
+        }
+      ]
+    },
+    "Kubernetes test / Kubernetes test (amd64, ubuntu-22.04)": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962277269"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21155423385/job/60839356379"
+        }
+      ]
+    },
+    "Kubernetes test / Kubernetes test (arm64, ubuntu-22.04-arm)": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962277280"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21155423385/job/60839356375"
+        }
+      ]
+    },
+    "Unit tests / unit-test (amd64, ubuntu-22.04)": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962213684"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21155423385/job/60839308995"
+        }
+      ]
+    },
+    "Unit tests / unit-test (arm64, ubuntu-22.04-arm)": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962213681"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21155423385/job/60839308988"
+        }
+      ]
+    },
+    "check-labels": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21174422990/job/60899216623"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171986947/job/60899668731"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171728662/job/60894812221"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21170603691/job/60886092821"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21170138071/job/60885800107"
+        }
+      ]
+    },
+    "ci-on-push": {
+      "pass_rate": 0,
+      "history": [
+        {
+          "status": "skipped",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171986947/job/60899712577"
+        },
+        {
+          "status": "skipped",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21170138071/job/60885821363"
+        }
+      ]
+    },
+    "ci-on-push / Build / build (amd64, ubuntu-22.04)": {
+      "pass_rate": 66.66666666666666,
+      "history": [
+        {
+          "status": "fail",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21174422990/job/60899254673"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171728662/job/60894841361"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21170603691/job/60886111663"
+        }
+      ]
+    },
+    "ci-on-push / Build / build (arm64, ubuntu-22.04-arm)": {
+      "pass_rate": 66.66666666666666,
+      "history": [
+        {
+          "status": "fail",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21174422990/job/60899254528"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171728662/job/60894841392"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21170603691/job/60886111615"
+        }
+      ]
+    },
+    "ci-on-push / E2E test / VM test (amd64, test_crictl)": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "skipped",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21174422990/job/60899386044"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171728662/job/60894939133"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21170603691/job/60886203419"
+        }
+      ]
+    },
+    "ci-on-push / E2E test / VM test (amd64, test_ctr)": {
+      "pass_rate": 66.66666666666666,
+      "history": [
+        {
+          "status": "fail",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21174422990/job/60899385973"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171728662/job/60894939213"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21170603691/job/60886203436"
+        }
+      ]
+    },
+    "ci-on-push / E2E test / VM test (amd64, test_docker)": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "skipped",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21174422990/job/60899386001"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171728662/job/60894939194"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21170603691/job/60886203411"
+        }
+      ]
+    },
+    "ci-on-push / E2E test / VM test (amd64, test_nerdctl)": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "skipped",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21174422990/job/60899385910"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171728662/job/60894939175"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21170603691/job/60886203422"
+        }
+      ]
+    },
+    "ci-on-push / E2E test / VM test (arm64, test_crictl)": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "skipped",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21174422990/job/60899386015"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171728662/job/60894939190"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21170603691/job/60886203410"
+        }
+      ]
+    },
+    "ci-on-push / E2E test / VM test (arm64, test_ctr)": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "skipped",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21174422990/job/60899385981"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171728662/job/60894939153"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21170603691/job/60886203476"
+        }
+      ]
+    },
+    "ci-on-push / E2E test / VM test (arm64, test_docker)": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "skipped",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21174422990/job/60899386005"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171728662/job/60894939212"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21170603691/job/60886203425"
+        }
+      ]
+    },
+    "ci-on-push / E2E test / VM test (arm64, test_nerdctl)": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "skipped",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21174422990/job/60899385965"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171728662/job/60894939130"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21170603691/job/60886203404"
+        }
+      ]
+    },
+    "ci-on-push / Kubernetes test / Kubernetes test (amd64, ubuntu-22.04)": {
+      "pass_rate": 66.66666666666666,
+      "history": [
+        {
+          "status": "fail",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21174422990/job/60899385881"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171728662/job/60894939091"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21170603691/job/60886203335"
+        }
+      ]
+    },
+    "ci-on-push / Kubernetes test / Kubernetes test (arm64, ubuntu-22.04-arm)": {
+      "pass_rate": 66.66666666666666,
+      "history": [
+        {
+          "status": "fail",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21174422990/job/60899385899"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171728662/job/60894939128"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21170603691/job/60886203347"
+        }
+      ]
+    },
+    "ci-on-push / Lint Files \u0026 commits / Check License Headers (amd64, ubuntu-22.04)": {
+      "pass_rate": 66.66666666666666,
+      "history": [
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21174422990/job/60899254571"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171728662/job/60894841382"
+        },
+        {
+          "status": "fail",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21170603691/job/60886111658"
+        }
+      ]
+    },
+    "ci-on-push / Lint Files \u0026 commits / Lint Commit Messages (amd64, ubuntu-22.04)": {
+      "pass_rate": 66.66666666666666,
+      "history": [
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21174422990/job/60899254516"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171728662/job/60894841387"
+        },
+        {
+          "status": "fail",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21170603691/job/60886111635"
+        }
+      ]
+    },
+    "ci-on-push / Lint Files \u0026 commits / Spell Check Repo (amd64, ubuntu-22.04)": {
+      "pass_rate": 33.33333333333333,
+      "history": [
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21174422990/job/60899254495"
+        },
+        {
+          "status": "fail",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171728662/job/60894841381"
+        },
+        {
+          "status": "fail",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21170603691/job/60886111634"
+        }
+      ]
+    },
+    "ci-on-push / Lint code / lint (amd64, ubuntu-22.04)": {
+      "pass_rate": 33.33333333333333,
+      "history": [
+        {
+          "status": "fail",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21174422990/job/60899254643"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171728662/job/60894841376"
+        },
+        {
+          "status": "fail",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21170603691/job/60886111630"
+        }
+      ]
+    },
+    "ci-on-push / Unit tests / unit-test (amd64, ubuntu-22.04)": {
+      "pass_rate": 66.66666666666666,
+      "history": [
+        {
+          "status": "fail",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21174422990/job/60899254533"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171728662/job/60894841350"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21170603691/job/60886111626"
+        }
+      ]
+    },
+    "ci-on-push / Unit tests / unit-test (arm64, ubuntu-22.04-arm)": {
+      "pass_rate": 66.66666666666666,
+      "history": [
+        {
+          "status": "fail",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21174422990/job/60899254513"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171728662/job/60894841449"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21170603691/job/60886111622"
+        }
+      ]
+    },
+    "dependency-review": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171986845/job/60899666543"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21171728565/job/60894811311"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21170137938/job/60885798914"
+        }
+      ]
+    },
+    "pr-takeover": {
+      "pass_rate": 0,
+      "history": [
+        {
+          "status": "skipped",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21174422947/job/60899217536"
+        },
+        {
+          "status": "skipped",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21170603678/job/60886084352"
+        }
+      ]
+    },
+    "stale": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21191993518/job/60960107872"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21154879464/job/60837757965"
+        }
+      ]
+    },
+    "urunc-deploy test / urunc-deploy (amd64, ubuntu-22.04)": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962277270"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21155423385/job/60839356364"
+        }
+      ]
+    },
+    "urunc-deploy test / urunc-deploy (arm64, ubuntu-22.04-arm)": {
+      "pass_rate": 100,
+      "history": [
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962277254"
+        },
+        {
+          "status": "pass",
+          "link": "https://github.com/urunc-dev/urunc/actions/runs/21155423385/job/60839356376"
+        }
+      ]
+    }
+  }
+}
