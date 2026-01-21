@@ -29,7 +29,6 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// Add the constant for the new driver
 const (
 	LibkrunVmm VmmType = "libkrun"
 )
@@ -39,7 +38,6 @@ type Libkrun struct {
 }
 
 func (l *Libkrun) Stop(pid int) error {
-	// In libkrun, the VM is the process. Killing the process stops the VM.
 	return killProcess(pid)
 }
 
@@ -68,10 +66,12 @@ func (l *Libkrun) Execve(args types.ExecArgs, ukernel types.Unikernel) error {
 	fmt.Sscanf(memMB, "%d", &ramMib) 
 
 	// 2. Create Context
-	ctxId := C.krun_create_ctx()
-	if ctxId < 0 {
+	rawCtxId := C.krun_create_ctx()
+	if rawCtxId < 0 {
 		return fmt.Errorf("failed to create libkrun context")
 	}
+	// FIX 1: Explicitly cast to C.uint32_t for all future calls
+	ctxId := C.uint32_t(rawCtxId)
 
 	// 3. Configure VM (vCPUs, RAM)
 	res := C.krun_set_vm_config(ctxId, C.uint8_t(args.VCPUs), C.uint32_t(ramMib))
@@ -79,32 +79,45 @@ func (l *Libkrun) Execve(args types.ExecArgs, ukernel types.Unikernel) error {
 		return fmt.Errorf("failed to set VM config (CPUs: %d, RAM: %dMB)", args.VCPUs, ramMib)
 	}
 
-	// 4. Networking (Placeholder)
-	if args.Net.TapDev != "" {
-		log.Warn("Networking in libkrun requires verifying specific API version methods")
-	}
-
-	// 5. Prepare Strings for Start
+	// FIX 2: Set Kernel/Initrd/Cmdline separately BEFORE starting
+	
+	// Set Kernel
 	cKernel := C.CString(args.UnikernelPath)
 	defer C.free(unsafe.Pointer(cKernel))
-
-	var cInitrd *C.char
-	if args.InitrdPath != "" {
-		cInitrd = C.CString(args.InitrdPath)
-		defer C.free(unsafe.Pointer(cInitrd))
+	if ret := C.krun_set_kernel(ctxId, cKernel); ret < 0 {
+		return fmt.Errorf("failed to set kernel path: %s", args.UnikernelPath)
 	}
 
-	cCmdline := C.CString(args.Command)
-	defer C.free(unsafe.Pointer(cCmdline))
+	// Set Initrd (if present)
+	if args.InitrdPath != "" {
+		cInitrd := C.CString(args.InitrdPath)
+		defer C.free(unsafe.Pointer(cInitrd))
+		if ret := C.krun_set_initrd(ctxId, cInitrd); ret < 0 {
+			return fmt.Errorf("failed to set initrd: %s", args.InitrdPath)
+		}
+	}
+
+	// Set Command Line arguments
+	if args.Command != "" {
+		cCmdline := C.CString(args.Command)
+		defer C.free(unsafe.Pointer(cCmdline))
+		if ret := C.krun_set_cmdline(ctxId, cCmdline); ret < 0 {
+			return fmt.Errorf("failed to set cmdline: %s", args.Command)
+		}
+	}
+
+	// 4. Networking (Placeholder - skipped to prevent errors for now)
+	if args.Net.TapDev != "" {
+		log.Warn("Networking requires verification of libkrun network API")
+	}
 
 	log.WithField("libkrun", "start").Info("Starting VM via library call")
 
-	// 6. Start the VM (This blocks until VM exit)
-	ret := C.krun_start_enter(ctxId, cKernel, cInitrd, cCmdline)
+	// 5. Start the VM
+	// FIX 3: Pass ONLY the ctxId, as indicated by the error "want (_Ctype_uint32_t)"
+	ret := C.krun_start_enter(ctxId)
 
 	log.Infof("Libkrun VM exited with code: %d", ret)
-	
-	// Exit the process with the VM's exit code
 	os.Exit(int(ret))
 	
 	return nil
