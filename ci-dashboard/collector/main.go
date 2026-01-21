@@ -175,6 +175,10 @@ func main() {
 	}
 
 	file, _ := json.MarshalIndent(output, "", "  ")
-	_ = ioutil.WriteFile("web/data.json", file, 0644)
-	fmt.Println("Done! Saved to web/data.json")
+// Write to the sibling directory "../web"
+	err := ioutil.WriteFile("../web/data.json", file, 0644)
+	if err != nil {
+		fmt.Println("Error writing file:", err)
+		os.Exit(1)
+	}	fmt.Println("Done! Saved to web/data.json")
 }
