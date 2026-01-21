@@ -1,0 +1,30 @@
+name: Verify Libkrun Build
+
+on: [push, workflow_dispatch]
+
+jobs:
+  check-compilation:
+    runs-on: ubuntu-latest
+    # We use Fedora because it has libkrun-devel pre-installed
+    container: fedora:latest 
+
+    steps:
+      - name: Install Dependencies
+        run: |
+          dnf install -y git golang libkrun-devel gcc make
+          # Verify the library header exists
+          ls -l /usr/include/libkrun.h
+
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Debug - Verify File Location
+        run: |
+          # Confirms the file is exactly where your screenshot showed
+          echo "Checking for libkrun.go..."
+          ls -l pkg/unikontainers/hypervisors/libkrun.go
+
+      - name: Build Libkrun Integration
+        run: |
+          # Build the package inside 'unikontainers/hypervisors'
+          go build -v ./pkg/unikontainers/hypervisors
