@@ -180,5 +180,4 @@ func main() {
 	if err != nil {
 		fmt.Println("Error writing file:", err)
 		os.Exit(1)
-	}	fmt.Println("Done! Saved to web/data.json")
-}
+	}	
