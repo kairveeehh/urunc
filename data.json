@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-01-22 04:01:35 UTC",
+  "generated_at": "2026-01-22 06:19:09 UTC",
   "latest_commit": {
     "sha": "a60f14e",
     "message": "test(e2e): add retry logic for image pulling\n\nCurrently, end-to-end tests fail intermittently during the setup phase\ndue to image pulling failures (e.g., registry timeouts or network\nissues).\n\nThis commit adds a retry mechanism with exponential backoff to the\nimage pulling logic in the test setup. It attempts to pull the required\nimages up to 5 times before failing the test.\n\nPR: https://github.com/urunc-dev/urunc/pull/377\nSigned-off-by: Sankalp \u003csankalp25103@gmail.com\u003e\nReviewed-by: Charalampos Mainas \u003ccmainas@nubificus.co.uk\u003e\nApproved-by: Charalampos Mainas \u003ccmainas@nubificus.co.uk\u003e",
@@ -30,10 +30,6 @@
         {
           "status": "pass",
           "link": "https://github.com/urunc-dev/urunc/actions/runs/21231293377/job/61090120600"
-        },
-        {
-          "status": "pass",
-          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962213696"
         }
       ]
     },
@@ -43,10 +39,6 @@
         {
           "status": "pass",
           "link": "https://github.com/urunc-dev/urunc/actions/runs/21231293377/job/61090120584"
-        },
-        {
-          "status": "pass",
-          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962213682"
         }
       ]
     },
@@ -56,10 +48,6 @@
         {
           "status": "pass",
           "link": "https://github.com/urunc-dev/urunc/actions/runs/21231293377/job/61090200085"
-        },
-        {
-          "status": "pass",
-          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962277293"
         }
       ]
     },
@@ -69,10 +57,6 @@
         {
           "status": "pass",
           "link": "https://github.com/urunc-dev/urunc/actions/runs/21231293377/job/61090200115"
-        },
-        {
-          "status": "pass",
-          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962277291"
         }
       ]
     },
@@ -82,10 +66,6 @@
         {
           "status": "pass",
           "link": "https://github.com/urunc-dev/urunc/actions/runs/21231293377/job/61090200123"
-        },
-        {
-          "status": "pass",
-          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962277294"
         }
       ]
     },
@@ -95,10 +75,6 @@
         {
           "status": "pass",
           "link": "https://github.com/urunc-dev/urunc/actions/runs/21231293377/job/61090200088"
-        },
-        {
-          "status": "pass",
-          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962277295"
         }
       ]
     },
@@ -108,10 +84,6 @@
         {
           "status": "pass",
           "link": "https://github.com/urunc-dev/urunc/actions/runs/21231293377/job/61090200132"
-        },
-        {
-          "status": "pass",
-          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962277301"
         }
       ]
     },
@@ -121,10 +93,6 @@
         {
           "status": "pass",
           "link": "https://github.com/urunc-dev/urunc/actions/runs/21231293377/job/61090200125"
-        },
-        {
-          "status": "pass",
-          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962277287"
         }
       ]
     },
@@ -134,10 +102,6 @@
         {
           "status": "pass",
           "link": "https://github.com/urunc-dev/urunc/actions/runs/21231293377/job/61090200093"
-        },
-        {
-          "status": "pass",
-          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962277302"
         }
       ]
     },
@@ -147,10 +111,6 @@
         {
           "status": "pass",
           "link": "https://github.com/urunc-dev/urunc/actions/runs/21231293377/job/61090200142"
-        },
-        {
-          "status": "pass",
-          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962277316"
         }
       ]
     },
@@ -160,10 +120,6 @@
         {
           "status": "pass",
           "link": "https://github.com/urunc-dev/urunc/actions/runs/21231293377/job/61090200002"
-        },
-        {
-          "status": "pass",
-          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962277269"
         }
       ]
     },
@@ -173,10 +129,6 @@
         {
           "status": "pass",
           "link": "https://github.com/urunc-dev/urunc/actions/runs/21231293377/job/61090200077"
-        },
-        {
-          "status": "pass",
-          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962277280"
         }
       ]
     },
@@ -186,10 +138,6 @@
         {
           "status": "pass",
           "link": "https://github.com/urunc-dev/urunc/actions/runs/21231293377/job/61090120582"
-        },
-        {
-          "status": "pass",
-          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962213684"
         }
       ]
     },
@@ -199,10 +147,6 @@
         {
           "status": "pass",
           "link": "https://github.com/urunc-dev/urunc/actions/runs/21231293377/job/61090120579"
-        },
-        {
-          "status": "pass",
-          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962213681"
         }
       ]
     },
@@ -401,10 +345,6 @@
         {
           "status": "pass",
           "link": "https://github.com/urunc-dev/urunc/actions/runs/21231293377/job/61090200040"
-        },
-        {
-          "status": "pass",
-          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962277270"
         }
       ]
     },
@@ -414,10 +354,6 @@
         {
           "status": "pass",
           "link": "https://github.com/urunc-dev/urunc/actions/runs/21231293377/job/61090200036"
-        },
-        {
-          "status": "pass",
-          "link": "https://github.com/urunc-dev/urunc/actions/runs/21192672221/job/60962277254"
         }
       ]
     }
