@@ -1157,3 +1157,57 @@ func dockerTestCases(kvmGroup ...int64) []containerTestArgs {
 		},
 	}
 }
+
+func krunTestCases() []containerTestArgs {
+	return []containerTestArgs{
+		{
+			Image:          "harbor.nbfc.io/nubificus/urunc/hello-krun-unikraft:latest",
+			Name:           "Krun-unikraft-hello",
+			Devmapper:      false,
+			Seccomp:        true,
+			UID:            0,
+			GID:            0,
+			Groups:         []int64{},
+			Memory:         "256M",
+			Cli:            "",
+			Volumes:        []containerVolume{},
+			StaticNet:      false,
+			SideContainers: []string{},
+			Skippable:      true, // Skip if libkrun images not available
+			ExpectOut:      "Hello world",
+			TestFunc:       matchTest,
+		},
+		{
+			Image:          "harbor.nbfc.io/nubificus/urunc/redis-krun-unikraft:latest",
+			Name:           "Krun-unikraft-redis",
+			Devmapper:      false,
+			Seccomp:        true,
+			UID:            0,
+			GID:            0,
+			Groups:         []int64{},
+			Memory:         "512M",
+			Cli:            "",
+			Volumes:        []containerVolume{},
+			StaticNet:      false,
+			SideContainers: []string{},
+			Skippable:      true, // Skip if libkrun images not available
+			TestFunc:       pingTest,
+		},
+		{
+			Image:          "harbor.nbfc.io/nubificus/urunc/nginx-krun-unikraft:latest",
+			Name:           "Krun-unikraft-nginx",
+			Devmapper:      false,
+			Seccomp:        true,
+			UID:            0,
+			GID:            0,
+			Groups:         []int64{},
+			Memory:         "512M",
+			Cli:            "",
+			Volumes:        []containerVolume{},
+			StaticNet:      false,
+			SideContainers: []string{},
+			Skippable:      true, // Skip if libkrun images not available
+			TestFunc:       httpGetTest,
+		},
+	}
+}

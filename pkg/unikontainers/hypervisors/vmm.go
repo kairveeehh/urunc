@@ -52,6 +52,10 @@ var vmmFactories = map[VmmType]VMMFactory{
 		binary:     FirecrackerBinary,
 		createFunc: func(binary, binaryPath string) types.VMM { return &Firecracker{binary: binary, binaryPath: binaryPath} },
 	},
+	KrunVmm: {
+		binary:     KrunBinary,
+		createFunc: func(binary, binaryPath string) types.VMM { return &Krun{binary: binary, binaryPath: binaryPath} },
+	},
 }
 
 func NewVMM(vmmType VmmType, monitors map[string]types.MonitorConfig) (vmm types.VMM, err error) {

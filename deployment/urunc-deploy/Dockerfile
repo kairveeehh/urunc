@@ -15,6 +15,18 @@
 FROM debian:bullseye@sha256:25c0cab214b810db1b3c8adef5a12a92596979abddf86bb364e8d9c9d111df9f AS solo5-builder
 
 # Remove libc-bin files to avoid segmentation fault.
+FROM debian:bullseye@sha256:25c0cab214b810db1b3c8adef5a12a92596979abddf86bb364e8d9c9d111df9f AS krun-builder
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    build-essential git autoconf automake libtool pkg-config && \
+    rm -rf /var/lib/apt/lists/*
+WORKDIR /krun
+# Build and install libkrun from source
+RUN git clone --depth 1 --branch v2.4.0 https://github.com/containers/libkrun.git . && \
+    ./autogen.sh && \
+    ./configure --prefix=/usr/local && \
+    make && \
+    make install
 # See more: https://stackoverflow.com/questions/78105004/docker-build-fails-because-unable-to-install-libc-bins
 RUN rm -f /var/lib/dpkg/info/libc-bin.* && \
     apt-get clean && \
@@ -41,6 +53,10 @@ RUN cp /app/tenders/hvt/solo5-hvt /artifacts/ && \
 FROM golang:1.24.6-alpine3.21@sha256:50f8a10a46c0c26b5b816a80314f1999196c44c3e3571f41026b061339c29db6 AS urunc-builder
 RUN apk update && \
     apk add --no-cache git make build-base linux-headers
+# Copy libkrun headers and libraries from krun-builder
+COPY --from=krun-builder /usr/local/include/libkrun.h /usr/local/include/
+COPY --from=krun-builder /usr/local/lib/libkrun* /usr/local/lib/
+COPY --from=krun-builder /usr/local/lib64/libkrun* /usr/local/lib64/ || true
 WORKDIR /app
 ARG REPO=urunc-dev/urunc
 ARG BRANCH=main

@@ -53,6 +53,21 @@ jobs:
       run: |
         go version
 
+    - name: Install libkrun dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential git autoconf automake libtool pkg-config
+
+    - name: Build and install libkrun
+      run: |
+        git clone --depth 1 --branch v1.17.0 https://github.com/containers/libkrun.git
+        cd libkrun
+        ./autogen.sh
+        ./configure --prefix=/usr/local
+        make
+        sudo make install
+        cd ..
+
     - name: Get revision SHA and branch (safe)
       id: get-rev
       env:

@@ -69,3 +69,21 @@ func TestDocker(t *testing.T) {
 		})
 	}
 }
+
+func TestKrun(t *testing.T) {
+	kvmGroup, err := getKVMGroupID()
+	if err != nil {
+		t.Errorf("Failed to get KVM group id")
+	}
+	tests := krunTestCases()
+	
+	for i := range tests {
+		tests[i].Groups = []int64{kvmGroup}
+	}
+	for _, tc := range tests {
+		t.Run(tc.Name, func(t *testing.T) {
+			nerdctlTool := newNerdctlTool(tc)
+			runTest(nerdctlTool, t)
+		})
+	}
+}

@@ -84,6 +84,7 @@ func defaultMonitorsConfig() map[string]types.MonitorConfig {
 		"hvt":         {DefaultMemoryMB: 256, DefaultVCPUs: 1},
 		"spt":         {DefaultMemoryMB: 256, DefaultVCPUs: 1},
 		"firecracker": {DefaultMemoryMB: 256, DefaultVCPUs: 1},
+		"libkrun":     {DefaultMemoryMB: 256, DefaultVCPUs: 1},
 	}
 }
 
