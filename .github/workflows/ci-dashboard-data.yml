@@ -1,0 +1,65 @@
+# Copyright (c) 2023-2026, Nubificus LTD
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: Fetch CI Dashboard Data
+run-name: Fetch CI Dashboard Data
+
+on:
+  schedule:
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'ci-dashboard/scripts/fetch-ci-data.js'
+      - '.github/workflows/ci-dashboard-data.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-and-commit-data:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+
+      - name: Fetch CI data
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          node ci-dashboard/scripts/fetch-ci-data.js > tmp-data.json
+
+      - name: Commit data to data branch
+        shell: bash
+        run: |
+          git config --global user.name "GH Actions Workflow"
+          git config --global user.email "<gha@runner>"
+          git fetch --all
+          # Create the branch if it doesn't exist
+          git checkout latest-ci-dashboard-data || git checkout -b latest-ci-dashboard-data
+          # Overwrite old data
+          mkdir -p ci-dashboard/data
+          mv tmp-data.json ci-dashboard/data/workflow_stats.json
+          git add ci-dashboard/data
+          git commit -m '[skip ci] latest CI dashboard data' || echo "No changes to commit"
+          git push --force origin latest-ci-dashboard-data
