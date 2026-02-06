@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>urunc CI Dashboard</title>
+  <style>
+    :root {
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8f9fa;
+      --bg-table-header: #2c3e50;
+      --text-primary: #333333;
+      --text-secondary: #666666;
+      --text-header: #ffffff;
+      --border-color: #dee2e6;
+      --accent-color: #3498db;
+      --accent-hover: #2980b9;
+      --success-color: #27ae60;
+      --fail-color: #e74c3c;
+      --skip-color: #f39c12;
+      --category-bg: #ecf0f1;
+      --shadow-color: rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+        'Helvetica Neue', Arial, sans-serif;
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      padding: 30px 0;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    header h1 a {
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    header h1 a:hover {
+      color: var(--accent-color);
+      text-decoration: underline;
+    }
+
+    header p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .controls input[type="text"] {
+      flex: 1;
+      min-width: 200px;
+      padding: 8px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+
+    .controls select {
+      padding: 8px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 0.9rem;
+      background: var(--bg-primary);
+    }
+
+    .stats-bar {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .stat-card {
+      background: var(--bg-primary);
+      border-radius: 8px;
+      padding: 16px 24px;
+      box-shadow: 0 2px 4px var(--shadow-color);
+      flex: 1;
+      min-width: 140px;
+      text-align: center;
+    }
+
+    .stat-card .stat-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    .stat-card .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .category-section {
+      margin-bottom: 30px;
+    }
+
+    .category-header {
+      background: var(--category-bg);
+      padding: 12px 20px;
+      border-radius: 8px 8px 0 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-left: 4px solid var(--accent-color);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--bg-primary);
+      box-shadow: 0 2px 4px var(--shadow-color);
+      border-radius: 0 0 8px 8px;
+      overflow: hidden;
+    }
+
+    thead th {
+      background: var(--bg-table-header);
+      color: var(--text-header);
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #34495e;
+    }
+
+    thead th .sort-indicator {
+      margin-left: 4px;
+      opacity: 0.5;
+    }
+
+    thead th .sort-indicator.active {
+      opacity: 1;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    tbody tr:hover {
+      background-color: #f5f8fa;
+    }
+
+    tbody td {
+      padding: 10px 16px;
+      font-size: 0.9rem;
+    }
+
+    .workflow-name a {
+      color: var(--accent-color);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .workflow-name a:hover {
+      text-decoration: underline;
+    }
+
+    .weather-icon {
+      width: 28px;
+      height: 28px;
+      vertical-align: middle;
+    }
+
+    .run-results {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .run-result {
+      text-decoration: none;
+      font-size: 0.8rem;
+      padding: 2px 4px;
+      border-radius: 3px;
+    }
+
+    .run-result.pass { color: var(--success-color); }
+    .run-result.fail { color: var(--fail-color); }
+    .run-result.skip { color: var(--skip-color); }
+
+    .loading {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-secondary);
+    }
+
+    .loading .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--border-color);
+      border-top: 4px solid var(--accent-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .error {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--fail-color);
+      background: #fef0ef;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+
+    .expandable-row {
+      cursor: pointer;
+    }
+
+    .expand-icon {
+      display: inline-block;
+      transition: transform 0.2s;
+      margin-right: 8px;
+      font-size: 0.8rem;
+    }
+
+    .expand-icon.expanded {
+      transform: rotate(90deg);
+    }
+
+    .job-details {
+      display: none;
+      background: #f8f9fa;
+    }
+
+    .job-details.visible {
+      display: table-row;
+    }
+
+    .job-details td {
+      padding: 12px 16px 12px 40px;
+    }
+
+    .job-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .job-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.78rem;
+      background: #e8e8e8;
+    }
+
+    .timestamp {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+
+    footer a {
+      color: var(--accent-color);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .controls {
+        flex-direction: column;
+      }
+
+      .controls input[type="text"],
+      .controls select {
+        width: 100%;
+      }
+
+      .stats-bar {
+        flex-direction: column;
+      }
+
+      thead th, tbody td {
+        padding: 8px 10px;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>
+        <a href="https://github.com/urunc-dev/urunc/actions" target="_blank" rel="noopener noreferrer">
+          🍜 urunc CI Dashboard
+        </a>
+      </h1>
+      <p>Unified view of CI workflow status across the urunc project</p>
+    </header>
+
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading workflow data...</p>
+    </div>
+
+    <div id="dashboard" style="display: none;">
+      <div class="stats-bar" id="stats-bar"></div>
+
+      <div class="controls">
+        <input type="text" id="search" placeholder="Filter workflows by name..." />
+        <select id="category-filter">
+          <option value="all">All Categories</option>
+        </select>
+      </div>
+
+      <div id="workflow-tables"></div>
+    </div>
+
+    <div id="error" class="error" style="display: none;"></div>
+
+    <footer>
+      <p>
+        Data sourced from the
+        <a href="https://docs.github.com/en/rest/actions" target="_blank" rel="noopener noreferrer">GitHub Actions API</a>.
+        Inspired by the
+        <a href="https://kata-containers.github.io/" target="_blank" rel="noopener noreferrer">Kata Containers CI Dashboard</a>.
+      </p>
+    </footer>
+  </div>
+
+  <script>
+    const OWNER = "urunc-dev";
+    const REPO = "urunc";
+    const RUNS_PER_WORKFLOW = 10;
+
+    const WEATHER_ICONS = [
+      "public/sunny.svg",
+      "public/partially-sunny.svg",
+      "public/cloudy.svg",
+      "public/rainy.svg",
+      "public/stormy.svg",
+    ];
+
+    function getWeatherIndex(fails, runs) {
+      if (runs === 0) return 4;
+      const failRate = fails / runs;
+      let idx = Math.floor((failRate * 10) / 2);
+      if (idx >= WEATHER_ICONS.length) idx = WEATHER_ICONS.length - 1;
+      if (isNaN(idx)) idx = 4;
+      return idx;
+    }
+
+    function categorizeWorkflow(name) {
+      const lower = name.toLowerCase();
+      if (lower.includes("ci") || lower.includes("nightly") || lower.includes("test")) {
+        return "CI / Testing";
+      }
+      if (lower.includes("build") || lower.includes("upload") ||
+          lower.includes("deploy") || lower.includes("release")) {
+        return "Build / Deploy";
+      }
+      if (lower.includes("lint") || lower.includes("codeql") ||
+          lower.includes("scorecard") || lower.includes("dependency") ||
+          lower.includes("validate")) {
+        return "Code Quality / Security";
+      }
+      return "Other";
+    }
+
+    function timeAgo(dateStr) {
+      const now = new Date();
+      const date = new Date(dateStr);
+      const seconds = Math.floor((now - date) / 1000);
+      if (seconds < 60) return "just now";
+      const minutes = Math.floor(seconds / 60);
+      if (minutes < 60) return `${minutes}m ago`;
+      const hours = Math.floor(minutes / 60);
+      if (hours < 24) return `${hours}h ago`;
+      const days = Math.floor(hours / 24);
+      if (days < 30) return `${days}d ago`;
+      const months = Math.floor(days / 30);
+      return `${months}mo ago`;
+    }
+
+    async function fetchJson(url) {
+      const response = await fetch(url, {
+        headers: { Accept: "application/vnd.github+json" },
+      });
+      if (!response.ok) {
+        throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
+      }
+      return response.json();
+    }
+
+    async function fetchWorkflowData() {
+      // Try to load pre-fetched data first
+      try {
+        const dataResponse = await fetch("data/workflow_stats.json");
+        if (dataResponse.ok) {
+          return { source: "prefetched", data: await dataResponse.json() };
+        }
+      } catch {
+        // Pre-fetched data not available, fall through to live API
+      }
+
+      // Fall back to live GitHub API (rate-limited for unauthenticated requests)
+      const workflows = await fetchJson(
+        `https://api.github.com/repos/${OWNER}/${REPO}/actions/workflows`
+      );
+
+      const result = {};
+
+      for (const wf of workflows.workflows) {
+        if (wf.path.startsWith("dynamic/")) continue;
+
+        try {
+          const runs = await fetchJson(
+            `https://api.github.com/repos/${OWNER}/${REPO}/actions/workflows/${wf.id}/runs?per_page=${RUNS_PER_WORKFLOW}`
+          );
+
+          if (!runs.workflow_runs || runs.workflow_runs.length === 0) continue;
+
+          let totalFails = 0;
+          let totalRuns = runs.workflow_runs.length;
+
+          const runResults = runs.workflow_runs.map((run) => {
+            const passed = run.conclusion === "success";
+            const skipped = run.conclusion === "skipped";
+            if (!passed && !skipped) totalFails++;
+            return {
+              conclusion: run.conclusion,
+              created_at: run.created_at,
+              html_url: run.html_url,
+              run_number: run.run_number,
+            };
+          });
+
+          result[wf.name] = {
+            category: categorizeWorkflow(wf.name),
+            path: wf.path,
+            html_url: wf.html_url,
+            total_runs: totalRuns,
+            total_fails: totalFails,
+            runs: runResults,
+            latest_run: runResults.length > 0
+              ? {
+                  conclusion: runResults[0].conclusion,
+                  created_at: runResults[0].created_at,
+                  html_url: runResults[0].html_url,
+                }
+              : null,
+          };
+        } catch (err) {
+          console.warn(`Failed to fetch runs for ${wf.name}:`, err);
+        }
+      }
+      return { source: "live", data: result };
+    }
+
+    function computeStatsFromData(data) {
+      let totalWorkflows = 0;
+      let totalPassing = 0;
+      let totalFailing = 0;
+      let categories = new Set();
+
+      for (const [name, wf] of Object.entries(data)) {
+        totalWorkflows++;
+        categories.add(wf.category);
+        if (wf.latest_run) {
+          if (wf.latest_run.conclusion === "success") {
+            totalPassing++;
+          } else if (wf.latest_run.conclusion === "failure") {
+            totalFailing++;
+          }
+        }
+      }
+
+      return { totalWorkflows, totalPassing, totalFailing, categories: [...categories] };
+    }
+
+    function renderStatsBar(stats) {
+      const bar = document.getElementById("stats-bar");
+      bar.innerHTML = `
+        <div class="stat-card">
+          <div class="stat-value">${stats.totalWorkflows}</div>
+          <div class="stat-label">Total Workflows</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" style="color: var(--success-color)">${stats.totalPassing}</div>
+          <div class="stat-label">Passing</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" style="color: var(--fail-color)">${stats.totalFailing}</div>
+          <div class="stat-label">Failing</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">${stats.categories.length}</div>
+          <div class="stat-label">Categories</div>
+        </div>
+      `;
+    }
+
+    function getRunsInfo(wf) {
+      // For pre-fetched data, use jobs; for live data, use runs
+      if (wf.runs) {
+        let fails = 0;
+        let runs = wf.runs.length;
+        wf.runs.forEach((r) => {
+          if (r.conclusion !== "success" && r.conclusion !== "skipped") fails++;
+        });
+        return { fails, runs, runDetails: wf.runs };
+      }
+      if (wf.jobs) {
+        let totalFails = 0;
+        let totalRuns = 0;
+        for (const [, job] of Object.entries(wf.jobs)) {
+          totalRuns += job.runs;
+          totalFails += job.fails;
+        }
+        return { fails: totalFails, runs: totalRuns, runDetails: null };
+      }
+      return { fails: 0, runs: wf.total_runs || 0, runDetails: null };
+    }
+
+    function renderWorkflowTables(data, searchTerm, categoryFilter) {
+      const container = document.getElementById("workflow-tables");
+      container.innerHTML = "";
+
+      // Group by category
+      const grouped = {};
+      for (const [name, wf] of Object.entries(data)) {
+        if (searchTerm && !name.toLowerCase().includes(searchTerm.toLowerCase())) {
+          continue;
+        }
+        const cat = wf.category;
+        if (categoryFilter !== "all" && cat !== categoryFilter) continue;
+        if (!grouped[cat]) grouped[cat] = [];
+        grouped[cat].push({ name, ...wf });
+      }
+
+      // Define category order
+      const categoryOrder = ["CI / Testing", "Build / Deploy", "Code Quality / Security", "Other"];
+
+      for (const cat of categoryOrder) {
+        const workflows = grouped[cat];
+        if (!workflows || workflows.length === 0) continue;
+
+        const section = document.createElement("div");
+        section.className = "category-section";
+
+        const header = document.createElement("div");
+        header.className = "category-header";
+        header.textContent = `${cat} (${workflows.length})`;
+        section.appendChild(header);
+
+        const table = document.createElement("table");
+        table.innerHTML = `
+          <thead>
+            <tr>
+              <th style="width:40px"></th>
+              <th>Workflow</th>
+              <th style="width:80px">Runs</th>
+              <th style="width:80px">Fails</th>
+              <th style="width:80px">Weather</th>
+              <th style="width:120px">Latest</th>
+              <th>Recent Results</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        `;
+
+        const tbody = table.querySelector("tbody");
+
+        for (const wf of workflows) {
+          const info = getRunsInfo(wf);
+          const weatherIdx = getWeatherIndex(info.fails, info.runs);
+
+          const row = document.createElement("tr");
+          row.className = "expandable-row";
+          row.innerHTML = `
+            <td><span class="expand-icon">▶</span></td>
+            <td class="workflow-name">
+              <a href="${wf.html_url}" target="_blank" rel="noopener noreferrer">${wf.name}</a>
+            </td>
+            <td>${info.runs}</td>
+            <td>${info.fails}</td>
+            <td><img src="${WEATHER_ICONS[weatherIdx]}" alt="weather" class="weather-icon" /></td>
+            <td class="timestamp">${wf.latest_run ? timeAgo(wf.latest_run.created_at) : "N/A"}</td>
+            <td>
+              <div class="run-results">
+                ${renderRecentResults(wf, info)}
+              </div>
+            </td>
+          `;
+
+          // Job details expansion row
+          const detailsRow = document.createElement("tr");
+          detailsRow.className = "job-details";
+          detailsRow.innerHTML = `
+            <td colspan="7">
+              ${renderJobDetails(wf, info)}
+            </td>
+          `;
+
+          row.addEventListener("click", () => {
+            const icon = row.querySelector(".expand-icon");
+            icon.classList.toggle("expanded");
+            detailsRow.classList.toggle("visible");
+          });
+
+          tbody.appendChild(row);
+          tbody.appendChild(detailsRow);
+        }
+
+        section.appendChild(table);
+        container.appendChild(section);
+      }
+    }
+
+    function renderRecentResults(wf, info) {
+      if (info.runDetails) {
+        return info.runDetails.map((r) => {
+          const cls = r.conclusion === "success" ? "pass"
+            : r.conclusion === "skipped" ? "skip" : "fail";
+          const emoji = r.conclusion === "success" ? "✅"
+            : r.conclusion === "skipped" ? "⚠️" : "❌";
+          return `<a href="${r.html_url}" target="_blank" rel="noopener noreferrer"
+                     class="run-result ${cls}" title="Run #${r.run_number}">${emoji}</a>`;
+        }).join("");
+      }
+      if (wf.jobs) {
+        // Summarize from jobs
+        const jobEntries = Object.entries(wf.jobs);
+        if (jobEntries.length === 0) return "No data";
+        const firstJob = jobEntries[0][1];
+        return (firstJob.results || []).map((result, i) => {
+          const cls = result === "Pass" ? "pass" : result === "Skip" ? "skip" : "fail";
+          const emoji = result === "Pass" ? "✅" : result === "Skip" ? "⚠️" : "❌";
+          const url = firstJob.urls ? firstJob.urls[i] : "#";
+          const runNum = firstJob.run_nums ? firstJob.run_nums[i] : "";
+          return `<a href="${url}" target="_blank" rel="noopener noreferrer"
+                     class="run-result ${cls}" title="Run #${runNum}">${emoji}</a>`;
+        }).join("");
+      }
+      return "No data";
+    }
+
+    function renderJobDetails(wf, info) {
+      if (wf.jobs && Object.keys(wf.jobs).length > 0) {
+        const jobBadges = Object.entries(wf.jobs).map(([jobName, job]) => {
+          const failRate = job.runs > 0 ? (job.fails / job.runs) : 0;
+          let bg = "#c6efce";
+          if (failRate > 0.5) bg = "#ffc7ce";
+          else if (failRate > 0) bg = "#ffeb9c";
+          return `<span class="job-badge" style="background:${bg}">${jobName} (${job.fails}/${job.runs} fails)</span>`;
+        }).join("");
+        return `<strong>Jobs:</strong><div class="job-list" style="margin-top:6px">${jobBadges}</div>`;
+      }
+      if (info.runDetails) {
+        const runBadges = info.runDetails.map((r) => {
+          const cls = r.conclusion === "success" ? "pass"
+            : r.conclusion === "skipped" ? "skip" : "fail";
+          const emoji = r.conclusion === "success" ? "✅"
+            : r.conclusion === "skipped" ? "⚠️" : "❌";
+          return `<a href="${r.html_url}" target="_blank" rel="noopener noreferrer"
+                     class="run-result ${cls}">${emoji} #${r.run_number}</a>`;
+        }).join("  ");
+        return `<strong>Recent Runs:</strong><div style="margin-top:6px">${runBadges}</div>`;
+      }
+      return "<em>No detailed data available</em>";
+    }
+
+    function populateCategoryFilter(categories) {
+      const select = document.getElementById("category-filter");
+      categories.forEach((cat) => {
+        const option = document.createElement("option");
+        option.value = cat;
+        option.textContent = cat;
+        select.appendChild(option);
+      });
+    }
+
+    async function init() {
+      const loadingEl = document.getElementById("loading");
+      const dashboardEl = document.getElementById("dashboard");
+      const errorEl = document.getElementById("error");
+
+      try {
+        const { data } = await fetchWorkflowData();
+        const stats = computeStatsFromData(data);
+
+        loadingEl.style.display = "none";
+        dashboardEl.style.display = "block";
+
+        renderStatsBar(stats);
+        populateCategoryFilter(stats.categories);
+        renderWorkflowTables(data, "", "all");
+
+        // Wire up search and filter
+        document.getElementById("search").addEventListener("input", (e) => {
+          renderWorkflowTables(
+            data,
+            e.target.value,
+            document.getElementById("category-filter").value
+          );
+        });
+
+        document.getElementById("category-filter").addEventListener("change", (e) => {
+          renderWorkflowTables(
+            data,
+            document.getElementById("search").value,
+            e.target.value
+          );
+        });
+      } catch (err) {
+        loadingEl.style.display = "none";
+        errorEl.style.display = "block";
+        errorEl.innerHTML = `
+          <p><strong>Failed to load workflow data</strong></p>
+          <p>${err.message}</p>
+          <p style="margin-top:10px; font-size:0.85rem;">
+            This may be due to GitHub API rate limits for unauthenticated requests.
+            The dashboard works best with pre-fetched data.
+          </p>
+        `;
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", init);
+  </script>
+</body>
+</html>
