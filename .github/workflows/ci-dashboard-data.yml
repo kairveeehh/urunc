@@ -26,6 +26,9 @@ on:
       - 'ci-dashboard/scripts/fetch-ci-data.js'
       - '.github/workflows/ci-dashboard-data.yml'
 
+permissions:
+  contents: write
+
 jobs:
   fetch-and-commit-data:
     runs-on: ubuntu-22.04

@@ -429,7 +429,7 @@
         headers: { Accept: "application/vnd.github+json" },
       });
       if (!response.ok) {
-        throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
+        throw new Error(`GitHub API error for ${url}: ${response.status} ${response.statusText}`);
       }
       return response.json();
     }
