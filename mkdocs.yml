@@ -35,6 +35,7 @@ nav:
   - Developer Guide: 
       - developer-guide/*.md
       - API Reference: https://pkg.go.dev/github.com/urunc-dev/urunc/pkg/unikontainers
+  - CI Workflows: workflows.md
   - Tutorials:
       - tutorials/*.md
 
@@ -151,11 +152,11 @@ plugins:
       j2_comment_start_string: '[#'
       j2_comment_end_string: '#]'
   - minify:
-      minify_html: true
+      minify_html: false
       minify_css: true
-      minify_js: true
+      minify_js: false
       htmlmin_opts:
-          remove_comments: true
+          remove_comments: false
       cache_safe: true
       css_files:
           - assets/stylesheets/theme.css
