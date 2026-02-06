@@ -92,6 +92,7 @@ extra_css:
   - assets/stylesheets/theme.css
 extra_javascript:
   - assets/javascripts/console-copy.js
+  - assets/javascripts/workflows.js
 
 extra:
   version:
@@ -152,16 +153,17 @@ plugins:
       j2_comment_start_string: '[#'
       j2_comment_end_string: '#]'
   - minify:
-      minify_html: false
+      minify_html: true
       minify_css: true
-      minify_js: false
+      minify_js: true
       htmlmin_opts:
-          remove_comments: false
+          remove_comments: true
       cache_safe: true
       css_files:
           - assets/stylesheets/theme.css
       js_files:
           - assets/javascripts/console-copy.js
+          - assets/javascripts/workflows.js
   - autorefs
 
 hooks:
